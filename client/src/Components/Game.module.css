@@ -1,0 +1,93 @@
+.game {
+  width: 70%;
+  padding: 30px;
+  display: flex;
+  margin: 20px auto;
+  border-radius: 2%;
+  align-items: center;
+  flex-flow: wrap column;
+  background-color: white;
+}
+
+.title { margin: 0px; margin-bottom: 10px;}
+.subtitle { 
+  margin: 0px;
+  color: gray;
+  font-size: 14px;
+}
+.subtitle b { text-transform: capitalize;}
+
+section {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.adminSelect {
+  align-self: flex-start;
+}
+.adminSelect label {
+  margin-right: 20px;
+}
+
+.cardContainer {
+  width: 470px;
+  height: 170px;
+  padding: 30px;
+  background: white;
+}
+
+.allNumbers {
+  display: flex;
+  justify-content: center;
+}
+.allNumbers td{
+  padding: 5px;
+  text-align: center;
+}
+
+.playerList{
+  width: 100%;
+  max-height: 50%;
+  overflow-x: scroll;
+}
+
+.playerList.day{
+  background: url('/day.jpg');
+  background-size: cover;
+}
+
+.playerList.night{
+  background: url('/night.jpg');
+  background-size: cover;
+}
+
+.playerList ul {
+  max-height: 500px;
+  padding: 30px;
+  list-style: none;
+}
+
+.player {
+  width: 90%;
+  height: 35px;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid black;
+  background-color: white;
+  box-shadow: 2px 2px 15px -4px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 2px 15px -4px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 2px 2px 15px -4px rgba(0,0,0,0.75);
+}
+
+.player .job {
+  float: right;
+}
+
+.player.selected {
+  background-color: red;
+}
+
+.player.disabled {
+  background-color: gray;
+}
