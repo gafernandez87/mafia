@@ -14,38 +14,68 @@ const renderAdmin = (game, events, target) => {
     const policeDisabled = game.alreadyPlayed.includes('policia');
     const medicDisabled = game.alreadyPlayed.includes('medico');
     const mafiaDisabled = game.alreadyPlayed.includes('mafia');
-    buttons.push(<button key="mafia" onClick={() => events.changeTurn('mafia')} disabled={mafiaDisabled}>Mafia</button>);
-    buttons.push(<button key="medico" onClick={() => events.changeTurn('medico')} disabled={medicDisabled}>Medico</button>);
-    buttons.push(<button key="policia" onClick={() => events.changeTurn('policia')} disabled={policeDisabled}>Policia</button>);
+    buttons.push(<button
+      key="mafia"
+      style={{ flexGrow: 1 }}
+      className={[styles.smallButton, styles.mafiaButton].join(' ')}
+      onClick={() => events.changeTurn('mafia')}
+      disabled={mafiaDisabled}>Mafia</button>);
+    buttons.push(<button
+      key="medico"
+      style={{ flexGrow: 1 }}
+      className={styles.smallButton}
+      onClick={() => events.changeTurn('medico')}
+      disabled={medicDisabled}>Medico</button>);
+    buttons.push(<button
+      key="policia"
+      style={{ flexGrow: 1 }}
+      className={[styles.smallButton, styles.policeButton].join(' ')}
+      onClick={() => events.changeTurn('policia')}
+      disabled={policeDisabled}>Policia</button>);
   }
-  const newDayEnabled = game.alreadyPlayed >= 3 || game.daytime === 'day';
-  buttons.push(<button onClick={events.toggleDay} key="pass" disabled={!newDayEnabled}>Pasar a {newDaytime}</button>);
-  buttons.push(<button onClick={() => events.kick(target.id)} key="kick">Echar {target ? `a ${target.name}` : ''}</button>);
-  buttons.push(<button onClick={events.reset} key="reset">Volver a empezar</button>);
+  const newDayEnabled = game.alreadyPlayed.length >= 3 || game.daytime === 'day';
+  buttons.push(<button
+    key="pass"
+    onClick={events.toggleDay}
+    className={[styles.smallButton, styles.pass].join(' ')}
+    disabled={!newDayEnabled}>Pasar a {newDaytime}</button>);
+  buttons.push(<button
+    key="kick"
+    style={{ flexGrow: 2 }}
+    onClick={() => events.kick(target.id)}
+    className={styles.smallButton}>Echar {target ? `a ${target.name}` : ''}</button>);
+  buttons.push(<button
+    key="reset"
+    style={{ flexGrow: 2 }}
+    onClick={events.reset}
+    className={styles.smallButton}>Volver a empezar</button>);
 
   return [...buttons]
 }
 
 const renderButtons = (turn, me, events, target) => {
   if (turn === me.job) {
+    const classes = [styles.coolButton];
     switch (me.job) {
       case 'mafia': {
+        classes.push(styles.mafiaButton);
         return (
-          <button onClick={() => events.kill(target.id)}>
+          <button className={classes.join(' ')} onClick={() => events.kill(target.id)}>
             Matar {target ? `a ${target.name}` : ''}
           </button>
         );
       }
       case 'policia': {
+        classes.push(styles.policiaButton);
         return (
-          <button onClick={() => events.investigate(target.id)}>
+          <button className={classes.join(' ')} onClick={() => events.investigate(target.id)}>
             Investigar {target ? `a ${target.name}` : ''}
           </button>
         );
       }
       case 'medico': {
         return (
-          <button onClick={() => events.protect(target.id)}>
+          <button className={classes.join(' ')} onClick={() => events.protect(target.id)}>
             Proteger {target ? `a ${target.name}` : ''}
           </button>
         );
@@ -75,7 +105,7 @@ const Playing = ({ game, me, events }) => {
           {game.players.map((p) => {
             if (p.isAdmin) return null;
             const selected = me.job === game.turn && target && target.id === p.id;
-            const disabled = p.status === 'dead' || p.id === me.id;
+            const disabled = p.status === 'dead';
             return (
               <Player
                 key={p.id}
@@ -89,8 +119,10 @@ const Playing = ({ game, me, events }) => {
           })}
         </ul>
       </div>
-      {renderButtons(game.turn, me, events, target)}
-      {me.isAdmin && renderAdmin(game, events, target)}
+      <div className={styles.buttons}>
+        {renderButtons(game.turn, me, events, target)}
+        {me.isAdmin && renderAdmin(game, events, target)}
+      </div>
     </>
   )
 }

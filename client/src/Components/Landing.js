@@ -15,7 +15,7 @@ const Landing = () => {
   const history = useHistory();
 
   const joinGame = () => {
-    apiCall(`/api/players`, {
+    apiCall(`http://localhost:4001/api/players`, {
       method: "POST",
       body: JSON.stringify({ name: name }),
     })

@@ -20,7 +20,7 @@ const Game = () => {
 
   useEffect(() => {
     const sessionId = cookies[SESSION_COOKIE];
-    socket = socketIOClient();
+    socket = socketIOClient('http://localhost:4001');
 
     socket.on("game", (game) => {
       if (game) {

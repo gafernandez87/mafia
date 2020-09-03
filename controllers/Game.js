@@ -106,7 +106,7 @@ exports.protect = (who) => {
   game.players = game.players.map((p) => ({
     ...p,
     isProtected: p.id === who,
-    nextStatus: 'alive',
+    nextStatus: p.id === who ? 'alive' : p.nextStatus,
   }));
   game.turn = 'admin';
   game.alreadyPlayed.push('medico');

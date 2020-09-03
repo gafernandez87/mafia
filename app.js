@@ -19,9 +19,7 @@ app.get('*', (_, res) => {
 });
 
 const server = http.createServer(app);
-
 const io = socketIo(server);
-
 const port = process.env.PORT || 4001;
 
 const GameController = require('./controllers/Game');
