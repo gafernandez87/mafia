@@ -29,6 +29,7 @@ router.post('/players', (req, res) => {
 
 router.delete('/players', (req, res) => {
   PlayerController.clear();
+  GameController.reset();
   res.status(200).send('done');
 });
 
