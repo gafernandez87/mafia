@@ -53,6 +53,7 @@ exports.begin = () => {
 
 exports.reset = () => {
   const players = PlayerController.getPlayers();
+  // const players = PlayerController.getMockPlayers();
   game = new Game(players);
   return game;
 };
@@ -64,6 +65,7 @@ exports.changeTurn = (job) => {
 
 exports.toggleDay = () => {
   const newDaytime = game.daytime === 'day' ? 'night' : 'day';
+  if (newDaytime === 'day') game.dayCount += 1;
   game.daytime = newDaytime;
   game.players = game.players.map((p) => ({
     ...p,

@@ -6,6 +6,7 @@ class Game {
     this.turn = 'admin';
     this.alreadyPlayed = [];
     this.winner = null;
+    this.dayCount = 1;
   }
 }
 

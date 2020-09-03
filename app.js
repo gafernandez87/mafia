@@ -32,9 +32,9 @@ io.on('connection', (socket) => {
     socket.emit('game', GameController.getGame());
   });
 
-  socket.on('setAdmin', (name) => {
-    const p = PlayerController.setAdmin(name);
-    io.emit('game', GameController.updatePlayers(p));
+  socket.on('setAdmin', (id) => {
+    const players = PlayerController.setAdmin(id);
+    io.emit('game', GameController.updatePlayers(players));
   });
 
   socket.on('beginGame', () => {
@@ -44,9 +44,8 @@ io.on('connection', (socket) => {
   socket.on('toggleDay', () => {
     io.emit('game', GameController.toggleDay());
   });
-
   socket.on('reset', () => {
-    io.emit('reset', GameController.reset());
+    io.emit('game', GameController.reset());
   });
 
   socket.on('changeTurn', (job) => {

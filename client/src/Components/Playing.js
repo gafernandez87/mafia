@@ -41,6 +41,7 @@ const renderAdmin = (game, events, target) => {
     disabled={!newDayEnabled}>Pasar a {newDaytime}</button>);
   buttons.push(<button
     key="kick"
+    disabled={!target}
     style={{ flexGrow: 2 }}
     onClick={() => events.kick(target.id)}
     className={styles.smallButton}>Echar {target ? `a ${target.name}` : ''}</button>);
@@ -60,7 +61,7 @@ const renderButtons = (turn, me, events, target) => {
       case 'mafia': {
         classes.push(styles.mafiaButton);
         return (
-          <button className={classes.join(' ')} onClick={() => events.kill(target.id)}>
+          <button disabled={!target} className={classes.join(' ')} onClick={() => events.kill(target.id)}>
             Matar {target ? `a ${target.name}` : ''}
           </button>
         );
@@ -68,14 +69,14 @@ const renderButtons = (turn, me, events, target) => {
       case 'policia': {
         classes.push(styles.policiaButton);
         return (
-          <button className={classes.join(' ')} onClick={() => events.investigate(target.id)}>
+          <button disabled={!target} className={classes.join(' ')} onClick={() => events.investigate(target.id)}>
             Investigar {target ? `a ${target.name}` : ''}
           </button>
         );
       }
       case 'medico': {
         return (
-          <button className={classes.join(' ')} onClick={() => events.protect(target.id)}>
+          <button disabled={!target} className={classes.join(' ')} onClick={() => events.protect(target.id)}>
             Proteger {target ? `a ${target.name}` : ''}
           </button>
         );
@@ -86,21 +87,24 @@ const renderButtons = (turn, me, events, target) => {
   return null;
 }
 
-
 const Playing = ({ game, me, events }) => {
   const [target, setTarget] = useState(null);
 
   const selectTarget = (who) => {
-    const target = game.players.find(p => p.id === who);
-    setTarget(target);
+    if (target && target.id === who) {
+      setTarget(null);
+    } else {
+      const target = game.players.find(p => p.id === who);
+      setTarget(target);
+    }
   }
 
   if (!me) return <div>Loading...</div>;
   return (
     <>
-      <h2 className={styles.title}>Juego en curso</h2>
+      <h2 className={styles.title}>Dia {game.dayCount}</h2>
       {game.turn !== 'admin' && <h4 className={styles.subtitle}>Es el turno de <b>{game.turn}</b></h4>}
-      <div className={[styles.playerList, styles.day].join(' ')}>
+      <div className={[styles.playerList, styles[game.daytime]].join(' ')}>
         <ul>
           {game.players.map((p) => {
             if (p.isAdmin) return null;

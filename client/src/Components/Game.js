@@ -21,6 +21,7 @@ const Game = () => {
   useEffect(() => {
     const sessionId = cookies[SESSION_COOKIE];
     socket = socketIOClient();
+    // socket = socketIOClient('http://localhost:4001');
 
     socket.on("game", (game) => {
       if (game) {
@@ -68,7 +69,7 @@ const Game = () => {
     investigate: (who) => socket.emit('investigate', who),
   }
 
-  if (!game) return <div>Loading</div>;
+  if (!game) return <div>Loading...</div>;
 
   return (
     <div className={styles.game}>

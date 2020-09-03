@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
@@ -9,13 +9,17 @@ import { SESSION_COOKIE } from "../utils/constants";
 // Styles
 import styles from "./Landing.module.css";
 
+const allJobs = ['mafia.png', 'medico.png', 'policia.png', 'pueblo.png'];
+
 const Landing = () => {
   const [name, setName] = useState("");
-  const [_, setCookie] = useCookies(["mafia-session-id"]);
+  const [job, setJob] = useState("");
+  const [_, setCookie] = useCookies([SESSION_COOKIE]);
   const history = useHistory();
 
   const joinGame = () => {
-    apiCall(`/api/players`, {
+    apiCall({
+      // apiCall(`http://localhost:4001/api/players`, {
       method: "POST",
       body: JSON.stringify({ name: name }),
     })
@@ -26,22 +30,33 @@ const Landing = () => {
       .catch((err) => console.log("Error while creating room", err));
   };
 
+  useEffect(() => {
+    changeJob();
+  }, []);
+
+  const changeJob = () => {
+    const job = allJobs.shift();
+    setJob(job);
+    allJobs.push(job);
+    setTimeout(() => {
+      changeJob();
+    }, 1000);
+  }
+
   return (
     <div className={styles.landing}>
-      <h2 className={styles.title}>Mafia!</h2>
-      <section className={styles.newRoom}>
-        <p className={styles.subtitle}>Ingresa tu nombre</p>
-        <label className={styles.roomName}>Nombre</label>
-        <input
-          type="text"
-          className={styles.input}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <button className={styles.button} onClick={joinGame}>
-          Unirse al juego
-        </button>
-      </section>
+      <h1 className={styles.title}>MAFIA</h1>
+      <img src={job} alt="roles" />
+      <input
+        type="text"
+        value={name}
+        placeholder="NOMBRE"
+        className={styles.input}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <button className={styles.coolButton} onClick={joinGame} >
+        Unirse al juego
+      </button>
     </div>
   );
 };

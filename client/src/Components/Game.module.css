@@ -6,15 +6,20 @@
   border-radius: 2%;
   align-items: center;
   flex-flow: wrap column;
-  background-color: white;
 }
 
-.title { margin: 0px; margin-bottom: 10px;}
+.title { 
+  margin: 0px; 
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
 .subtitle { 
   margin: 0px;
   color: gray;
   font-size: 14px;
 }
+
 .subtitle b { text-transform: capitalize;}
 
 section {
@@ -23,10 +28,19 @@ section {
 }
 
 .adminSelect {
+  width: 100%;
+  display: flex;
+  flex-flow: wrap row;
   align-self: flex-start;
+  justify-content: space-between;
 }
 .adminSelect label {
-  margin-right: 20px;
+  margin: auto 20px auto 0px;
+}
+.adminSelect select {
+  flex-grow: 1;
+  height: 40px;
+  font-size: 15px;
 }
 
 .cardContainer {
@@ -68,14 +82,15 @@ section {
 }
 
 .player {
-  width: 90%;
   height: 35px;
   padding: 5px;
+  display: flex;
   line-height: 30px;
   margin-bottom: 10px;
   border-radius: 10px;
-  border: 1px solid black;
+  flex-flow: wrap row;
   background-color: white;
+  justify-content: space-between;
   box-shadow: 2px 2px 15px -4px rgba(0,0,0,0.75);
   -moz-box-shadow: 2px 2px 15px -4px rgba(0,0,0,0.75);
   -webkit-box-shadow: 2px 2px 15px -4px rgba(0,0,0,0.75);
@@ -163,4 +178,15 @@ section {
 
 .pass{
   width: 100%;
+}
+
+.lobbyPlayers{
+  width: 100%;
+  padding: 0px;
+  list-style: none;
+}
+.lobbyPlayers img {
+  width: 25px;
+  height: 25px;
+  margin-top: 4px;
 }
