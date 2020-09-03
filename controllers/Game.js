@@ -52,7 +52,7 @@ exports.begin = () => {
 };
 
 exports.reset = () => {
-  const players = PlayerController.getMockPlayers();
+  const players = PlayerController.getPlayers();
   game = new Game(players);
   return game;
 };

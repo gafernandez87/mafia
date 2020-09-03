@@ -6,6 +6,10 @@ exports.addPlayer = (name) => {
   players.push(name);
 };
 
+exports.clear = () => {
+  players = [];
+};
+
 exports.getPlayers = () => players;
 exports.getMockPlayers = () => [
   {

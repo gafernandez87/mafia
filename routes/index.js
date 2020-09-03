@@ -27,4 +27,9 @@ router.post('/players', (req, res) => {
   res.status(200).json(newPlayer);
 });
 
+router.delete('/players', (req, res) => {
+  PlayerController.clear();
+  res.status(200).send('done');
+});
+
 module.exports = router;
