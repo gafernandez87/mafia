@@ -5,6 +5,7 @@ import socketIOClient from "socket.io-client";
 // Components
 import Lobby from '../Components/Lobby';
 import Playing from '../Components/Playing';
+import Notification from '../Components/Notification/Notification';
 
 // Style
 import styles from "./Game.module.css";
@@ -16,6 +17,10 @@ let socket;
 const Game = () => {
   const [game, setGame] = useState(null);
   const [me, setMe] = useState(null);
+  const [notification, setNotification] = useState({
+    visible: false,
+    message: '',
+  });
   const [cookies] = useCookies([SESSION_COOKIE]);
 
   useEffect(() => {
@@ -27,7 +32,17 @@ const Game = () => {
       if (game) {
         console.log(game);
         if (game.status === 'game_over') {
-          alert("Ganó " + game.winner);
+          setNotification({
+            visible: true,
+            message: (
+              <>
+                <h3>Juego terminado</h3>
+                <p style={{ fontSize: '20px', marginBottom: '40px' }}>
+                  Ganó {game.winner === 'pueblo' ? 'el pueblo!' : 'la mafia!'}
+                </p>
+              </>
+            ),
+          });
         } else {
           setGame(game);
           if (!me) {
@@ -54,7 +69,15 @@ const Game = () => {
     });
 
     socket.on("investigate", (result) => {
-      alert('Resultado: ' + result);
+      setNotification({
+        visible: true,
+        message: (
+          <>
+            <b style={{ fontSize: '17px' }}>Resultado de la investigacion:</b>
+            <h2>{result ? <b style={{ color: 'green' }}>POSITIVO</b> : <b style={{ color: 'red' }}>NEGATIVO</b>}</h2>
+          </>
+        ),
+      });
       socket.emit("changeTurn", { nextTurn: "admin" });
     });
   }, []);
@@ -70,7 +93,10 @@ const Game = () => {
 
   const initGame = () => {
     if (game.players.length < 5) {
-      alert("Se necesitan al menos 5 jugadores para comenzar");
+      setNotification({
+        visible: true,
+        message: <h3>Se necesitan al menos 5 jugadores para comenzar</h3>,
+      });
     } else {
       emit('beginGame');
     }
@@ -86,10 +112,18 @@ const Game = () => {
     investigate: (who) => socket.emit('investigate', who),
   }
 
+  const closeModal = () => {
+    setNotification({ visible: false, message: '' });
+  }
+
   if (!game) return <div>Loading...</div>;
 
   return (
     <div className={styles.game}>
+      <Notification
+        visible={notification.visible}
+        message={notification.message}
+        handleOk={closeModal} />
       {game.status === 'new' &&
         <Lobby
           players={game.players}

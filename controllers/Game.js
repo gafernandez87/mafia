@@ -27,7 +27,7 @@ const isGameOver = () => {
     .filter((p) => p.job !== 'admin' && p.job !== 'mafia' && p.status === 'alive').length;
   return {
     isOver: !hasMafia || alive <= 1,
-    winner: alive >= 1 ? 'Pueblo' : 'Mafia',
+    winner: alive > 1 ? 'pueblo' : 'mafia',
   };
 };
 
@@ -92,6 +92,11 @@ exports.kick = (who) => {
     ...p,
     status: p.id === who ? 'dead' : p.status,
   }));
+  const gameOver = isGameOver();
+  if (gameOver.isOver) {
+    game.status = 'game_over';
+    game.winner = gameOver.winner;
+  }
   return game;
 };
 
