@@ -9,11 +9,11 @@ import { SESSION_COOKIE } from "../utils/constants";
 // Styles
 import styles from "./Landing.module.css";
 
-const allJobs = ['mafia.png', 'medico.png', 'policia.png', 'pueblo.png'];
+const allJobs = ['mafia', 'medico', 'policia', 'pueblo'];
 
 const Landing = () => {
   const [name, setName] = useState("");
-  const [job, setJob] = useState("");
+  const [job, setJob] = useState(null);
   const [_, setCookie] = useCookies([SESSION_COOKIE]);
   const history = useHistory();
 
@@ -46,7 +46,10 @@ const Landing = () => {
   return (
     <div className={styles.landing}>
       <h1 className={styles.title}>MAFIA</h1>
-      <img src={job} alt="roles" />
+      <img src="mafia.png" alt="roles" style={{ display: job === 'mafia' ? 'block' : 'none' }} />
+      <img src="medico.png" alt="roles" style={{ display: job === 'medico' ? 'block' : 'none' }} />
+      <img src="policia.png" alt="roles" style={{ display: job === 'policia' ? 'block' : 'none' }} />
+      <img src="pueblo.png" alt="roles" style={{ display: job === 'pueblo' ? 'block' : 'none' }} />
       <input
         type="text"
         value={name}

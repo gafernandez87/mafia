@@ -58,7 +58,10 @@ exports.reset = () => {
   return game;
 };
 
-exports.changeTurn = (job) => {
+exports.changeTurn = (job, from) => {
+  if (from) {
+    game.alreadyPlayed.push(from);
+  }
   game.turn = job;
   return game;
 };
@@ -74,8 +77,7 @@ exports.toggleDay = () => {
     isProtected: false,
   }));
 
-  game.alreadyPlayed = game.players
-    .filter((p) => p.status === 'dead' && p.job !== 'pueblo');
+  game.alreadyPlayed = [];
 
   const gameOver = isGameOver();
   if (gameOver.isOver) {
@@ -117,7 +119,6 @@ exports.protect = (who) => {
 
 exports.investigate = (who) => {
   const suspect = game.players.find((p) => p.id === who);
-  // game.turn = 'admin';
   game.alreadyPlayed.push('policia');
   return suspect.job === 'mafia';
 };

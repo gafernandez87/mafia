@@ -30,15 +30,32 @@ const Game = () => {
           alert("Ganó " + game.winner);
         } else {
           setGame(game);
-          const me = game.players.find(p => p.id === sessionId);
-          setMe(me);
+          if (!me) {
+            const me = game.players.find(p => p.id === sessionId);
+            setMe(me);
+          }
+          if (game.turn === 'policia') {
+            const police = game.players.find(p => p.job === 'policia');
+            if (police.status === 'dead') {
+              setTimeout(() => {
+                socket.emit("changeTurn", { nextTurn: "admin", from: 'policia' });
+              }, 3000);
+            }
+          } else if (game.turn === 'medico') {
+            const medic = game.players.find(p => p.job === 'medico');
+            if (medic.status === 'dead') {
+              setTimeout(() => {
+                socket.emit("changeTurn", { nextTurn: "admin", from: 'medico' });
+              }, 3000);
+            }
+          }
         }
       }
     });
 
     socket.on("investigate", (result) => {
       alert('Resultado: ' + result);
-      socket.emit("changeTurn", "admin");
+      socket.emit("changeTurn", { nextTurn: "admin" });
     });
   }, []);
 
@@ -65,7 +82,7 @@ const Game = () => {
     kick: (who) => socket.emit('kick', who),
     kill: (who) => socket.emit('kill', who),
     protect: (who) => socket.emit('protect', who),
-    changeTurn: (job) => socket.emit('changeTurn', job),
+    changeTurn: (job) => socket.emit('changeTurn', { nextTurn: job }),
     investigate: (who) => socket.emit('investigate', who),
   }
 

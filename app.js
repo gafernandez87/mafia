@@ -48,8 +48,8 @@ io.on('connection', (socket) => {
     io.emit('game', GameController.reset());
   });
 
-  socket.on('changeTurn', (job) => {
-    io.emit('game', GameController.changeTurn(job));
+  socket.on('changeTurn', (obj) => {
+    io.emit('game', GameController.changeTurn(obj.nextTurn, obj.from));
   });
 
   socket.on('kick', (who) => {

@@ -18,7 +18,10 @@ const Player = ({ player, me, handleClick, selected, disabled }) => {
   const classes = [styles.player];
   if (selected) classes.push(styles.selected);
   if (disabled) classes.push(styles.disabled);
-  const clickeable = !disabled && player.id !== me.id;
+  const clickeable = !disabled &&
+    (player.id !== me.id ||
+      (player.id === me.id && me.job === 'medico')
+    );
 
   return (
     <li className={classes.join(' ')} onClick={() => clickeable && handleClick(player.id)}>

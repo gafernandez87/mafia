@@ -55,36 +55,36 @@ const renderAdmin = (game, events, target) => {
 }
 
 const renderButtons = (turn, me, events, target) => {
-  if (turn === me.job) {
-    const classes = [styles.coolButton];
-    switch (me.job) {
-      case 'mafia': {
-        classes.push(styles.mafiaButton);
-        return (
-          <button disabled={!target} className={classes.join(' ')} onClick={() => events.kill(target.id)}>
-            Matar {target ? `a ${target.name}` : ''}
-          </button>
-        );
-      }
-      case 'policia': {
-        classes.push(styles.policiaButton);
-        return (
-          <button disabled={!target} className={classes.join(' ')} onClick={() => events.investigate(target.id)}>
-            Investigar {target ? `a ${target.name}` : ''}
-          </button>
-        );
-      }
-      case 'medico': {
-        return (
-          <button disabled={!target} className={classes.join(' ')} onClick={() => events.protect(target.id)}>
-            Proteger {target ? `a ${target.name}` : ''}
-          </button>
-        );
-      }
-      default: return null;
+  if (me.status === 'dead') return null;
+  if (turn !== me.job) return null;
+
+  const classes = [styles.coolButton];
+  switch (me.job) {
+    case 'mafia': {
+      classes.push(styles.mafiaButton);
+      return (
+        <button disabled={!target} className={classes.join(' ')} onClick={() => events.kill(target.id)}>
+          Matar {target ? `a ${target.name}` : ''}
+        </button>
+      );
     }
+    case 'policia': {
+      classes.push(styles.policiaButton);
+      return (
+        <button disabled={!target} className={classes.join(' ')} onClick={() => events.investigate(target.id)}>
+          Investigar {target ? `a ${target.name}` : ''}
+        </button>
+      );
+    }
+    case 'medico': {
+      return (
+        <button disabled={!target} className={classes.join(' ')} onClick={() => events.protect(target.id)}>
+          Proteger {target ? `a ${target.name}` : ''}
+        </button>
+      );
+    }
+    default: return null;
   }
-  return null;
 }
 
 const Playing = ({ game, me, events }) => {
