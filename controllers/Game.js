@@ -5,13 +5,24 @@ let game = null;
 const basicJobs = ['mafia', 'policia', 'medico', 'pueblo'];
 const getRandom = (min, max) => min + Math.floor((max - min) * Math.random());
 
+const shuffleArray = (input) => {
+  const array = [...input];
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+};
+
 const assignJobs = () => {
   const allJobs = [...basicJobs];
   for (let i = 0; i < (game.players.length - 5); i += 1) {
     allJobs.push('pueblo');
   }
 
-  const newPlayers = game.players.map((p) => {
+  const newPlayers = shuffleArray(game.players).map((p) => {
     const r = getRandom(0, allJobs.length - 1);
     return {
       ...p,
