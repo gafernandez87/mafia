@@ -22,11 +22,12 @@ const assignJobs = () => {
     allJobs.push('pueblo');
   }
 
+  const jobsShuffled = shuffleArray(allJobs);
   const newPlayers = shuffleArray(game.players).map((p) => {
-    const r = getRandom(0, allJobs.length - 1);
+    const r = getRandom(0, jobsShuffled.length - 1);
     return {
       ...p,
-      job: p.isAdmin ? 'admin' : allJobs.splice(r, 1)[0],
+      job: p.isAdmin ? 'admin' : jobsShuffled.splice(r, 1)[0],
     };
   });
   return newPlayers;
